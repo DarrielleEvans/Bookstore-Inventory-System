@@ -3,6 +3,8 @@
 This was a bootcamp capstone project. The objective is to create a bookstore inventory system using HTML, CSS, and Javascript.
 [Live Demo]()
 
+### To login please use: username: cevans & password: test123
+
 ## Learning Resources
 
 
