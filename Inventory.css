@@ -183,3 +183,9 @@ body,html{
         color: #475466;
       
 }
+#addBookBtn{
+    width:fit-content;
+    height:fit-content;
+    background-color: #02a1ce;
+    font-size: medium;
+}

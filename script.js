@@ -102,25 +102,14 @@ function noLogin(){
     const incorrectMessage = document.createTextNode("incorrect username or password");
     loginContainer.appendChild(incorrectMessage);
 }
+
 */
 
-
 //inventory.html script
-    //class that defines properties for book information
 
-class Book {
-    constructor(title, author, price, isbn, genre, quanity) {
-      this.title = title;
-      this.author = author;
-      this.price=price;
-      this.isbn = isbn;
-      this.genre=genre;
-      this.quantity=quanity;
-      
-    }
-  }
      //modal script
 // Get the modal
+
 var modal = document.getElementById("myModal");
 
 // Get the button that opens the modal
@@ -147,16 +136,117 @@ window.onclick = function(event) {
 }
 
 
-    //script to add book to the list
+//class that defines properties for book information
+let bookInventory = [];
 
-    
+class Book {
+    constructor(title, author, price, isbn, genre, quanity) {
+        this.title = title;
+        this.author = author;
+        this.price=price;
+        this.isbn = isbn;
+        this.genre=genre;
+        this.quantity=quanity;
+          
+    }
+}
 
 
 
 
+    //const newBook = new Book (title,author, price, isbn, genre, quantity);
+document.querySelector('#book-form').addEventListener('submit', (e) => {
+        // Prevent actual submit
+    e.preventDefault();
+       // Get form values
+    const title = document.querySelector('#title').value;
+    const author = document.querySelector('#author').value;
+    const price = document.querySelector('#price').value;
+    const isbn = document.querySelector('#isbn').value;
+    const genre = document.querySelector('#genre').value;
+    const quantity = document.querySelector('#quantity').value;
 
 
+    const newBook = new Book (title,author, price, isbn, genre, quantity);
+    console.log(newBook);
+
+    const listBook = document.querySelector('#bookList');
+
+    const newRow = document.createElement('tr');
+ 
+    newRow.innerHTML = `
+      <td>${newBook.title}</td>
+      <td>${newBook.author}</td>
+      <td>${newBook.price}</td>
+      <td>${newBook.isbn}</td>
+      <td>${newBook.genre}</td>
+      <td>${newBook.quantity}</td>
+      <td><button type="button" onclick="updateBook(this)">Update</button>
+      <button type="button" onclick="deleteBook(this)">Delete</button></td>`;
+
+    listBook.appendChild(newRow);
+    bookInventory.push(newBook);
+    localStorage.setItem('books', JSON.stringify(bookInventory));
+    console.log("book Inventory", bookInventory);
+    clearModal();
+  
+});
 
 
+function clearModal() {
+    document.querySelector('#title').value = '';
+    document.querySelector('#author').value = '';
+    document.querySelector('#price').value = '';
+    document.querySelector('#isbn').value = '';
+    document.querySelector('#genre').value = '';
+    document.querySelector('#quantity').value= '';
+}
+
+
+function upTo(el, tagName) {
+    tagName = tagName.toLowerCase();
+  
+    while (el && el.parentNode) {
+      el = el.parentNode;
+      if (el.tagName && el.tagName.toLowerCase() == tagName) {
+        return el;
+      }
+    }
+    return null;
+}  
+
+
+function deleteBook(el) {
+    let indexFinder = 0;
+    var bookRow = upTo(el, 'tr');
+    let rowI = bookRow.rowIndex;
+    console.log("index: ", rowI);
+
+    for(let i=0; i<bookInventory.length; i++){
+        if(rowI-1 === i){
+            indexFinder = i;
+            bookInventory.splice(indexFinder,1);
+
+            console.log(" new book array: ",bookInventory);  
+        }
+
+    }
+    if (bookRow) bookRow.parentNode.removeChild(bookRow);
+    localStorage.setItem('books', JSON.stringify(bookInventory));
+}
+
+function getBooks() {
+    var retrieveBooks = JSON.parse(localStorage.getItem('books')); 
+    return retrieveBooks;
+}
+
+
+function updateBook(el) {
+    let retrievedBooks = getBooks();
+    var bookRows = upTo(el, 'tr');
+    let rowI = bookRows.rowIndex;
+    alert(rowI);
+    console.log("new book list: ", retrievedBooks)
+}
 
 
