@@ -67,11 +67,41 @@ localStorage.setItem("employeearray", storeEmployeeProfiles);
 
 const storeSiteProfiles = JSON.stringify(siteProfiles);
 localStorage.setItem("userArray", storeSiteProfiles);
-/*
+
+
+function setLoggedUser(user){
+  const loggedUser = JSON.stringify(user);
+  localStorage.setItem('currentUser', loggedUser);
+  return JSON.parse(localStorage.getItem('currentUser'));
+
+}
+staffProfile();
+function staffProfile(){
+  let profiles = [];
+  profiles = JSON.parse(localStorage.getItem('employeearray'));
+  console.log("pro: ",profiles);
+  for (let i=0; i<profiles.length; i++){
+    
+  }
+
+}
+
+staffRole();
+
+function staffRole(){
+  let role = JSON.parse(localStorage.getItem('currentUser'));
+  console.log("role: ", role);
+}
+
+
 //check username and password to login to site
 let forms = document.getElementById("formLogin");
 console.log(forms);
-forms.addEventListener('submit', submitLogin);
+
+if (forms){
+  forms.addEventListener('submit', submitLogin);
+}
+
 function submitLogin(e) {
     console.log(e);
     let tbUserName = document.getElementById("userName").value;
@@ -87,6 +117,8 @@ function submitLogin(e) {
     for(let i = 0; i < siteUser.length; i++) {
    
       if(siteUser[i].userName == tbUserName && siteUser[i].password == tbPassword){
+        setLoggedUser(siteUser[i]);
+        
         e.preventDefault();
         window.location.href = "Inventory.html";
       }else{
@@ -96,6 +128,7 @@ function submitLogin(e) {
         break;
     }
 }
+
 //show incorrect message if login fails
 function noLogin(){
     let loginContainer = document.getElementById("noMessage");
@@ -103,7 +136,7 @@ function noLogin(){
     loginContainer.appendChild(incorrectMessage);
 }
 
-*/
+
 
 //inventory.html script
 
@@ -119,13 +152,17 @@ var modalBtn = document.getElementById("modalBtn");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
-modalBtn.onclick = function() {
-  modal.style.display = "block";
+if (modalBtn){
+  modalBtn.onclick = function() {
+    modal.style.display = "block";
+  }
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
+if (span){
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
 }
 
 // When the user clicks anywhere outside of the modal, close it
@@ -151,47 +188,47 @@ class Book {
     }
 }
 
+const listBook = document.querySelector('#bookList');
 
-
-
+if (listBook){
     //const newBook = new Book (title,author, price, isbn, genre, quantity);
-document.querySelector('#book-form').addEventListener('submit', (e) => {
-        // Prevent actual submit
-    e.preventDefault();
-       // Get form values
-    const title = document.querySelector('#title').value;
-    const author = document.querySelector('#author').value;
-    const price = document.querySelector('#price').value;
-    const isbn = document.querySelector('#isbn').value;
-    const genre = document.querySelector('#genre').value;
-    const quantity = document.querySelector('#quantity').value;
+  document.querySelector('#book-form').addEventListener('submit', (e) => {
+          // Prevent actual submit
+      e.preventDefault();
+        // Get form values
+      const title = document.querySelector('#title').value;
+      const author = document.querySelector('#author').value;
+      const price = document.querySelector('#price').value;
+      const isbn = document.querySelector('#isbn').value;
+      const genre = document.querySelector('#genre').value;
+      const quantity = document.querySelector('#quantity').value;
 
 
-    const newBook = new Book (title,author, price, isbn, genre, quantity);
-    console.log(newBook);
+      const newBook = new Book (title,author, price, isbn, genre, quantity);
+      console.log(newBook);
 
-    const listBook = document.querySelector('#bookList');
+      //const listBook = document.querySelector('#bookList');
 
-    const newRow = document.createElement('tr');
- 
-    newRow.innerHTML = `
-      <td>${newBook.title}</td>
-      <td>${newBook.author}</td>
-      <td>${newBook.price}</td>
-      <td>${newBook.isbn}</td>
-      <td>${newBook.genre}</td>
-      <td>${newBook.quantity}</td>
-      <td><button type="button" onclick="updateBook(this)">Update</button>
-      <button type="button" onclick="deleteBook(this)">Delete</button></td>`;
-
-    listBook.appendChild(newRow);
-    bookInventory.push(newBook);
-    localStorage.setItem('books', JSON.stringify(bookInventory));
-    console.log("book Inventory", bookInventory);
-    clearModal();
+      const newRow = document.createElement('tr');
   
-});
+      newRow.innerHTML = `
+        <td>${newBook.title}</td>
+        <td>${newBook.author}</td>
+        <td>${newBook.price}</td>
+        <td>${newBook.isbn}</td>
+        <td>${newBook.genre}</td>
+        <td>${newBook.quantity}</td>
+        <td><button type="button" onclick="updateBook(this)">Update</button>
+        <button type="button" onclick="deleteBook(this)">Delete</button></td>`;
 
+      listBook.appendChild(newRow);
+      bookInventory.push(newBook);
+      localStorage.setItem('books', JSON.stringify(bookInventory));
+      console.log("book Inventory", bookInventory);
+      clearModal();
+    
+  });
+}
 
 function clearModal() {
     document.querySelector('#title').value = '';
@@ -241,12 +278,129 @@ function getBooks() {
 }
 
 
-function updateBook(el) {
-    let retrievedBooks = getBooks();
-    var bookRows = upTo(el, 'tr');
-    let rowI = bookRows.rowIndex;
-    alert(rowI);
-    console.log("new book list: ", retrievedBooks)
+     // update modal script
+// Get the modal
+
+var updateModal = document.getElementById("updateModal");
+
+// Get the button that opens the modal
+//var modalBtn = document.getElementById("modalBtn");
+
+// Get the <span> element that closes the modal
+var updateSpan = document.getElementsByClassName("updateClose")[0];
+
+
+// When the user clicks the button, open the modal 
+/*modalBtn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+updateSpan.onclick = function() {
+  modal.style.display = "none";
+}*/
+
+
+
+// When the user clicks anywhere outside of the modal, close it
+
+
+function getBooks() {
+    var retrieveBooks = JSON.parse(localStorage.getItem('books')); 
+    return retrieveBooks;
 }
 
 
+function updateBook(el) {
+    updateModal.style.display = "block";
+
+    let retrievedBooks = getBooks();
+    var bookRows = upTo(el, 'tr');
+    let rowI= bookRows.rowIndex;
+    let bookIndex = rowI -1;
+    existingBook(bookIndex);
+
+
+    
+    console.log("new book list: ", retrievedBooks)
+}
+
+if (updateSpan){
+
+  updateSpan.onclick = function() {
+      updateModal.style.display = "none";
+  }
+}
+
+function existingBook (index){
+    let bookTitle = document.getElementById('update-title');
+    bookTitle.value = bookInventory[index].title;
+
+    let bookAuthor = document.getElementById('update-author');
+    bookAuthor.value = bookInventory[index].author;
+
+    let bookPrice = document.getElementById('update-price');
+    bookPrice.value = bookInventory[index].price;
+
+    let bookISBN = document.getElementById('update-isbn');
+    bookISBN.value = bookInventory[index].isbn;
+
+    let bookGenre = document.getElementById('update-genre');
+    bookGenre.value = bookInventory[index].genre;
+
+    let bookQuantity = document.getElementById('update-quantity');
+    bookQuantity.value = bookInventory[index].quantity;
+
+    /*let saveButton = document.getElementById('saveBookBtn');
+    if(saveButton) {
+      saveButton.addEventListener('click', saveExistingBook(index))
+    }*/
+
+}
+
+
+
+
+/*function saveExistingBook(index){
+    bookInventory[index].title = document.getElementById('update-title');
+    bookInventory[index].author = document.getElementById('update-author');
+    bookInventory[index].price = document.getElementById('update-price');
+    bookInventory[index].isbn = document.getElementById('update-isbn');
+    bookInventory[index].genre = document.getElementById('update-genre');
+    bookInventory[index].quanity = document.getElementById('update-quantity');
+    //bookInventory.push(bookInventory[index]);
+    localStorage.setItem('books', JSON.stringify(bookInventory));
+    console.log("book Inventory", bookInventory);
+    //clearModal();
+    for (let i = listBook.rows.length - 1; i >= 0; i--) {
+      listBook.deleteRow(i);
+    }
+
+    bookInventory.forEach(function (book) {
+      let bookRow = document.createElement('tr');
+      let bookTitle = document.createElement('td');
+      let bookAuthor = document.createElement('td');
+      let bookPrice = document.createElement('td');
+      let bookisbn = document.createElement('td');
+      let bookGenre = document.createElement('td');
+      let bookQuantity = document.createElement('td');
+
+      bookTitle.innerHTML = book.title;
+      bookAuthor.innerHTML = book.author;
+      bookPrice.innerHTML = book.price;
+      bookisbn.innerHTML = book.isbn;
+      bookGenre.innerHTML = book.genre;
+      bookQuantity.innerHTML = book.quantity;
+      bookRow.appendChild(bookTitle);
+      bookRow.appendChild(bookAuthor);
+      bookRow.appendChild(bookPrice);
+      bookRow.appendChild(bookisbn);
+      bookRow.appendChild(bookGenre);
+      bookRow.appendChild(bookQuantity);
+
+      listBook.appendChild(bookRow);
+    });
+   
+
+}
+*/
