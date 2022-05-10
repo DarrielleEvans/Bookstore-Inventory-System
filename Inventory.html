@@ -23,10 +23,11 @@
             <h1>Books Galore</h1>
             <div id="mySidepanel" class="sidepanel">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                <div id = "user-info"></div>
                 <a href="#">About</a>
-                <a href="#">Services</a>
-                <a href="#">Clients</a>
-                <a href="#">Contact</a>
+                <div class ="menu-choice"><a  href = #>Register Employee</a></div>
+                <div class ="menu-choice"><a  href = #>Register Site-User</a></div>
+                <a href="#">Logout</a>
             </div>
             <button class="openbtn" onclick="openNav()">☰ menu</button> 
 
@@ -69,26 +70,57 @@
           <h2>Book Information</h2>
             <form id="book-form">
                 <div class="modal-row">
-                <input id="title" name="title" type="text" placeholder="Title" required />
+                    <input id="title" name="title" type="text" placeholder="Title" required />
                 </div>
                 <div class="modal-row">
                     <input id="author" name="author" type="text" placeholder="Author" required />
                 </div>
                 <div class="modal-row">
-                <input id="price" name="price" type="text" placeholder="Price" required />
+                    <input id="price" name="price" type="text" placeholder="Price" required />
                 </div>
                 <div class="modal-row">
-                <input id="isbn" name="isbn" type="text" placeholder="ISBN#" required />
+                    <input id="isbn" name="isbn" type="text" placeholder="ISBN#" required />
                 </div>
                 <div class="modal-row">
-                <input id="genre" name="genre" type="text" placeholder="Genre" required />
+                    <input id="genre" name="genre" type="text" placeholder="Genre" required />
                 </div>
                 <div class="modal-row">
-                <input id="quantity" name="quantity" type="number" placeholder="Quantity" required />
+                    <input id="quantity" name="quantity" type="number" placeholder="Quantity" required />
                 </div>
                 <button type="submit" value="Add Book" id = "addBookBtn">Add Book</button>
             </form>
           </div>
+    </div>
+
+    <!--modal html-->
+    <div id="updateModal" class="upModal">
+
+        <!-- Modal content -->
+        <div class="update-modal-content">
+            <span class="updateClose">&times;</span>
+            <h2>Update <br> Book Information</h2>
+             <form id="update-form">
+                <div class="update-row">
+                    <input id="update-title" name="title" type="text" placeholder="Title" required />
+                </div>
+                <div class="update-row">
+                    <input id="update-author" name="author" type="text" placeholder="Author" required />
+                </div>
+                <div class="update-row">
+                    <input id="update-price" name="price" type="text" placeholder="Price" required />
+                </div>
+                <div class="update-row">
+                    <input id="update-isbn" name="isbn" type="text" placeholder="ISBN#" required />
+                </div>
+                <div class="update-row">
+                    <input id="update-genre" name="genre" type="text" placeholder="Genre" required />
+                </div>
+                <div class="update-row">
+                    <input id="update-quantity" name="quantity" type="number" placeholder="Quantity" required />
+                </div>
+                <button type="submit" value="Update Book" id = "saveBookBtn">Save Book</button>
+            </form>
+        </div>
     </div>
       
       

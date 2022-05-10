@@ -72,26 +72,41 @@ localStorage.setItem("userArray", storeSiteProfiles);
 function setLoggedUser(user){
   const loggedUser = JSON.stringify(user);
   localStorage.setItem('currentUser', loggedUser);
+  console.log("loggedUser",loggedUser);
   return JSON.parse(localStorage.getItem('currentUser'));
-
 }
-staffProfile();
-function staffProfile(){
+
+getCurrentProfile();
+function getCurrentProfile(){
+  let currentUser = staffRole();
+  console.log("hey", currentUser);
+  currentUser.employeeID;
   let profiles = [];
   profiles = JSON.parse(localStorage.getItem('employeearray'));
-  console.log("pro: ",profiles);
-  for (let i=0; i<profiles.length; i++){
-    
-  }
+  console.log("profiles: ", profiles);
+  for(let i = 0; i<profiles.length; i++){
+    if(currentUser.employeeID == profiles[i].idNumber){
+        console.log("idNum: ", profiles.idNumber);
+    }
 
+  }
+  
 }
 
-staffRole();
+//staffRole();
 
 function staffRole(){
   let role = JSON.parse(localStorage.getItem('currentUser'));
   console.log("role: ", role);
+  return role;
 }
+
+function getName()
+  {
+    let uProfile = staffRole();
+    console.log("uprofile: ", uProfile);
+  }
+
 
 
 //check username and password to login to site
@@ -351,56 +366,10 @@ function existingBook (index){
     let bookQuantity = document.getElementById('update-quantity');
     bookQuantity.value = bookInventory[index].quantity;
 
-    /*let saveButton = document.getElementById('saveBookBtn');
-    if(saveButton) {
-      saveButton.addEventListener('click', saveExistingBook(index))
-    }*/
-
 }
 
 
 
 
-/*function saveExistingBook(index){
-    bookInventory[index].title = document.getElementById('update-title');
-    bookInventory[index].author = document.getElementById('update-author');
-    bookInventory[index].price = document.getElementById('update-price');
-    bookInventory[index].isbn = document.getElementById('update-isbn');
-    bookInventory[index].genre = document.getElementById('update-genre');
-    bookInventory[index].quanity = document.getElementById('update-quantity');
-    //bookInventory.push(bookInventory[index]);
-    localStorage.setItem('books', JSON.stringify(bookInventory));
-    console.log("book Inventory", bookInventory);
-    //clearModal();
-    for (let i = listBook.rows.length - 1; i >= 0; i--) {
-      listBook.deleteRow(i);
-    }
 
-    bookInventory.forEach(function (book) {
-      let bookRow = document.createElement('tr');
-      let bookTitle = document.createElement('td');
-      let bookAuthor = document.createElement('td');
-      let bookPrice = document.createElement('td');
-      let bookisbn = document.createElement('td');
-      let bookGenre = document.createElement('td');
-      let bookQuantity = document.createElement('td');
-
-      bookTitle.innerHTML = book.title;
-      bookAuthor.innerHTML = book.author;
-      bookPrice.innerHTML = book.price;
-      bookisbn.innerHTML = book.isbn;
-      bookGenre.innerHTML = book.genre;
-      bookQuantity.innerHTML = book.quantity;
-      bookRow.appendChild(bookTitle);
-      bookRow.appendChild(bookAuthor);
-      bookRow.appendChild(bookPrice);
-      bookRow.appendChild(bookisbn);
-      bookRow.appendChild(bookGenre);
-      bookRow.appendChild(bookQuantity);
-
-      listBook.appendChild(bookRow);
-    });
-   
-
-}
-*/
+ 
