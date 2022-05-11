@@ -48,18 +48,21 @@ class userProfile {
 
 //initial owner profile and login to be used to initially login to the system
 const owner = new Manager("Cali Evans", 4120,{ add: true, update: true, delete: true, list: true },1,"Manager");
-console.dir(owner);
+const owner2 = new Employee("Xach Evans", 7123,{ add: true, update: true, delete: true, list: true },1, "Employee");
+
 
 const ownerLogin = new userProfile ("cevans", "test123",4120);
-
+const ownerLogin2 = new userProfile ("xevans", "testing",7123);
 //will use arrays to store employee profiles and store them in local storage to be used throughout system
 let employeeProfiles = [];
 let siteProfiles = [];
 
 employeeProfiles.push(owner);
+employeeProfiles.push(owner2);
 console.log("Profiles", employeeProfiles);
 
 siteProfiles.push(ownerLogin);
+siteProfiles.push(ownerLogin2);
 console.log("Site Profiles", siteProfiles);
 
 const storeEmployeeProfiles = JSON.stringify(employeeProfiles);
@@ -76,21 +79,23 @@ function setLoggedUser(user){
   return JSON.parse(localStorage.getItem('currentUser'));
 }
 
-getCurrentProfile();
-function getCurrentProfile(){
-  let currentUser = staffRole();
-  console.log("hey", currentUser);
-  currentUser.employeeID;
-  let profiles = [];
-  profiles = JSON.parse(localStorage.getItem('employeearray'));
-  console.log("profiles: ", profiles);
-  for(let i = 0; i<profiles.length; i++){
-    if(currentUser.employeeID == profiles[i].idNumber){
-        console.log("idNum: ", profiles.idNumber);
+let userInfo = document.getElementById("user-info");
+if(userInfo){
+  getCurrentProfile();
+  function getCurrentProfile(){
+    //let userInfo = document.getElementById("user-info");
+    let currentUser = staffRole();
+    console.log("hey", currentUser);
+    currentUser.employeeID;
+    let profiles = [];
+    profiles = JSON.parse(localStorage.getItem('employeearray'));
+    console.log("profiles: ", profiles);
+    for(let i = 0; i<profiles.length; i++){
+      if(currentUser.employeeID == profiles[i].idNumber){
+          userInfo.textContent = profiles[i].name;
+      }
     }
-
   }
-  
 }
 
 //staffRole();
@@ -100,13 +105,6 @@ function staffRole(){
   console.log("role: ", role);
   return role;
 }
-
-function getName()
-  {
-    let uProfile = staffRole();
-    console.log("uprofile: ", uProfile);
-  }
-
 
 
 //check username and password to login to site
@@ -121,8 +119,7 @@ function submitLogin(e) {
     console.log(e);
     let tbUserName = document.getElementById("userName").value;
     let tbPassword = document.getElementById("password").value;
-    console.log(tbUserName);
-    console.log(tbPassword);
+
 
   
     var siteUser = [];
@@ -131,16 +128,21 @@ function submitLogin(e) {
   
     for(let i = 0; i < siteUser.length; i++) {
    
-      if(siteUser[i].userName == tbUserName && siteUser[i].password == tbPassword){
+      if(tbUserName === siteUser[i].userName  && tbPassword === siteUser[i].password){
         setLoggedUser(siteUser[i]);
-        
+        console.log(tbUserName);
+        console.log(tbPassword);
+  
         e.preventDefault();
         window.location.href = "Inventory.html";
-      }else{
-        noLogin();
+        if(tbUserName === siteUser[i].userName  && tbPassword === siteUser[i].password)break;
+      }
+      
+      else{
+        //noLogin();
         e.preventDefault();
       }
-        break;
+        
     }
 }
 
@@ -367,6 +369,8 @@ function existingBook (index){
     bookQuantity.value = bookInventory[index].quantity;
 
 }
+
+
 
 
 
