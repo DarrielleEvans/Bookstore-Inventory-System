@@ -47,23 +47,23 @@ class userProfile {
 }
 
 //initial owner profile and login to be used to initially login to the system
-const owner = new Manager("Cali Evans", 4120,{ add: true, update: true, delete: true, list: true },1,"Manager");
-const owner2 = new Employee("Xach Evans", 7123,{ add: true, update: true, delete: true, list: true },1, "Employee");
+const manager = new Manager("Cali Evans", 4120,{ add: true, update: true, delete: true, list: true },1,"Manager");
+const employee = new Employee("Xach Evans", 7123,{ add: true, update: true, delete: true, list: true },1, "Employee");
 
 
-const ownerLogin = new userProfile ("cevans", "test123",4120);
-const ownerLogin2 = new userProfile ("xevans", "testing",7123);
+const managerLogin = new userProfile ("cevans", "test123",4120);
+const employeeLogin = new userProfile ("xevans", "testing",7123);
 //will use arrays to store employee profiles and store them in local storage to be used throughout system
 let employeeProfiles = [];
 let siteProfiles = [];
 
-employeeProfiles.push(owner);
-employeeProfiles.push(owner2);
-console.log("Profiles", employeeProfiles);
+employeeProfiles.push(manager);
+employeeProfiles.push(employee);
 
-siteProfiles.push(ownerLogin);
-siteProfiles.push(ownerLogin2);
-console.log("Site Profiles", siteProfiles);
+
+siteProfiles.push(managerLogin);
+siteProfiles.push(employeeLogin);
+
 
 const storeEmployeeProfiles = JSON.stringify(employeeProfiles);
 localStorage.setItem("employeearray", storeEmployeeProfiles);
@@ -75,7 +75,6 @@ localStorage.setItem("userArray", storeSiteProfiles);
 function setLoggedUser(user){
   const loggedUser = JSON.stringify(user);
   localStorage.setItem('currentUser', loggedUser);
-  console.log("loggedUser",loggedUser);
   return JSON.parse(localStorage.getItem('currentUser'));
 }
 
@@ -85,11 +84,9 @@ if(userInfo){
   function getCurrentProfile(){
     //let userInfo = document.getElementById("user-info");
     let currentUser = staffRole();
-    console.log("hey", currentUser);
     currentUser.employeeID;
     let profiles = [];
     profiles = JSON.parse(localStorage.getItem('employeearray'));
-    console.log("profiles: ", profiles);
     for(let i = 0; i<profiles.length; i++){
       if(currentUser.employeeID == profiles[i].idNumber){
           userInfo.textContent = profiles[i].name;
@@ -99,24 +96,21 @@ if(userInfo){
 }
 
 //staffRole();
-
 function staffRole(){
   let role = JSON.parse(localStorage.getItem('currentUser'));
-  console.log("role: ", role);
   return role;
 }
 
 
 //check username and password to login to site
 let forms = document.getElementById("formLogin");
-console.log(forms);
+
 
 if (forms){
   forms.addEventListener('submit', submitLogin);
 }
 
 function submitLogin(e) {
-    console.log(e);
     let tbUserName = document.getElementById("userName").value;
     let tbPassword = document.getElementById("password").value;
 
@@ -124,15 +118,12 @@ function submitLogin(e) {
   
     var siteUser = [];
     siteUser = JSON.parse(localStorage.getItem("userArray"));
-    console.log("SList",siteUser); 
   
     for(let i = 0; i < siteUser.length; i++) {
    
       if(tbUserName === siteUser[i].userName  && tbPassword === siteUser[i].password){
         setLoggedUser(siteUser[i]);
-        console.log(tbUserName);
-        console.log(tbPassword);
-  
+
         e.preventDefault();
         window.location.href = "Inventory.html";
         if(tbUserName === siteUser[i].userName  && tbPassword === siteUser[i].password)break;
@@ -153,11 +144,8 @@ function noLogin(){
     loginContainer.appendChild(incorrectMessage);
 }
 
-
-
 //inventory.html script
-
-     //modal script
+//modal script
 // Get the modal
 
 var modal = document.getElementById("myModal");
@@ -189,10 +177,8 @@ window.onclick = function(event) {
   }
 }
 
-
-//class that defines properties for book information
 let bookInventory = [];
-
+//class that defines properties for book information
 class Book {
     constructor(title, author, price, isbn, genre, quanity) {
         this.title = title;
@@ -206,7 +192,6 @@ class Book {
 }
 
 const listBook = document.querySelector('#bookList');
-
 if (listBook){
     //const newBook = new Book (title,author, price, isbn, genre, quantity);
   document.querySelector('#book-form').addEventListener('submit', (e) => {
@@ -225,7 +210,6 @@ if (listBook){
       console.log(newBook);
 
       //const listBook = document.querySelector('#bookList');
-
       const newRow = document.createElement('tr');
   
       newRow.innerHTML = `
@@ -241,7 +225,6 @@ if (listBook){
       listBook.appendChild(newRow);
       bookInventory.push(newBook);
       localStorage.setItem('books', JSON.stringify(bookInventory));
-      console.log("book Inventory", bookInventory);
       clearModal();
     
   });
@@ -255,7 +238,6 @@ function clearModal() {
     document.querySelector('#genre').value = '';
     document.querySelector('#quantity').value= '';
 }
-
 
 function upTo(el, tagName) {
     tagName = tagName.toLowerCase();
@@ -274,16 +256,13 @@ function deleteBook(el) {
     let indexFinder = 0;
     var bookRow = upTo(el, 'tr');
     let rowI = bookRow.rowIndex;
-    console.log("index: ", rowI);
-
+   
     for(let i=0; i<bookInventory.length; i++){
         if(rowI-1 === i){
             indexFinder = i;
             bookInventory.splice(indexFinder,1);
-
-            console.log(" new book array: ",bookInventory);  
+ 
         }
-
     }
     if (bookRow) bookRow.parentNode.removeChild(bookRow);
     localStorage.setItem('books', JSON.stringify(bookInventory));
@@ -305,49 +284,24 @@ var updateModal = document.getElementById("updateModal");
 
 // Get the <span> element that closes the modal
 var updateSpan = document.getElementsByClassName("updateClose")[0];
-
-
-// When the user clicks the button, open the modal 
-/*modalBtn.onclick = function() {
-  modal.style.display = "block";
+if (updateSpan){
+  updateSpan.onclick = function() {
+      updateModal.style.display = "none";
+  }
 }
 
-// When the user clicks on <span> (x), close the modal
-updateSpan.onclick = function() {
-  modal.style.display = "none";
-}*/
-
-
-
-// When the user clicks anywhere outside of the modal, close it
-
-
-function getBooks() {
-    var retrieveBooks = JSON.parse(localStorage.getItem('books')); 
-    return retrieveBooks;
-}
-
-
+let bookIndex;
 function updateBook(el) {
     updateModal.style.display = "block";
 
     let retrievedBooks = getBooks();
     var bookRows = upTo(el, 'tr');
-    let rowI= bookRows.rowIndex;
-    let bookIndex = rowI -1;
+    let rowI = bookRows.rowIndex;
+    bookIndex = rowI -1;
     existingBook(bookIndex);
-
-
-    
-    console.log("new book list: ", retrievedBooks)
 }
 
-if (updateSpan){
 
-  updateSpan.onclick = function() {
-      updateModal.style.display = "none";
-  }
-}
 
 function existingBook (index){
     let bookTitle = document.getElementById('update-title');
@@ -370,10 +324,47 @@ function existingBook (index){
 
 }
 
+//update book details in list when save book button is clicked
+let saveBookBtn = document.getElementById('saveBookBtn');
+if (saveBookBtn) {
+    document.querySelector('#update-form').addEventListener('submit', (e) => {
+      // Prevent actual submit
+    e.preventDefault();
+    // Get form values
+    bookInventory[bookIndex].title = document.getElementById('update-title').value;
+    bookInventory[bookIndex].author = document.getElementById('update-author').value;
+    bookInventory[bookIndex].price = document.getElementById('update-price').value;
+    bookInventory[bookIndex].isbn = document.getElementById('update-isbn').value;
+    bookInventory[bookIndex].genre = document.getElementById('update-genre').value;
+    bookInventory[bookIndex].quantity = document.getElementById('update-quantity').value;
 
 
+    for (let i = listBook.rows.length - 1; i >= 0; i--) {
+      listBook.deleteRow(i);
+    }
 
+  //const listBook = document.querySelector('#bookList');
+  bookInventory.forEach(function (bookReload){
+    const newRows = document.createElement('tr');
 
+    newRows.innerHTML = `
+      <td>${bookReload.title}</td>
+      <td>${bookReload.author}</td>
+      <td>${bookReload.price}</td>
+      <td>${bookReload.isbn}</td>
+      <td>${bookReload.genre}</td>
+      <td>${bookReload.quantity}</td>
+      <td><button type="button" onclick="updateBook(this)">Update</button>
+      <button type="button" onclick="deleteBook(this)">Delete</button></td>`;
 
+      listBook.appendChild(newRows);
 
+      localStorage.setItem('books', JSON.stringify(bookInventory));
+      updateModal.style.display = "none";
+
+    });
+  });
+
+}
  
+
